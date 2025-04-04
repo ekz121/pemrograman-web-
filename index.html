@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Card Interface</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #fafafa;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode {
+            background: #18181b;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .container {
+            background: #2a2a2e;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .list-item {
+            display: none;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e4e4e7;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .dark-mode .list-item {
+            background: #3a3a3e;
+            border-color: #4a4a4e;
+            color: #ffffff;
+        }
+
+        .list-item.visible {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            background: #18181b;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .icon {
+            background: #ffffff;
+        }
+
+        .icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .icon svg {
+            color: #18181b;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #18181b;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .title {
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #71717a;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .subtitle {
+            color: #a1a1a6;
+        }
+
+        .date {
+            font-size: 14px;
+            color: #71717a;
+            text-align: right;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .date {
+            color: #a1a1a6;
+        }
+
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            margin: 8px auto 0 auto;
+            width: 140px;
+            background: none;
+            color: #71717a;
+            border: 1px solid #e4e4e7;
+            border-radius: 24px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .dark-mode .toggle-btn {
+            color: #a1a1a6;
+            border-color: #4a4a4e;
+        }
+
+        .toggle-btn svg {
+            transition: transform 0.3s;
+        }
+
+        .container.expanded .toggle-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .night-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #18181b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .night-mode-toggle {
+            background: #ffffff;
+        }
+
+        .night-mode-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .night-mode-toggle svg {
+            color: #18181b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="list">
+            <div class="list-item visible" data-url="https://www.blogger.com/blog/posts/3763708063003933312">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 5v10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 1: Pengenalan HTML dan CSS</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">1 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum2.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 8v4l3 3" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 2: Membuat Portofolio Pribadi</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">6 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum3.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 3h18v18H3zM9 3v18M15 3v18M3 9h18M3 15h18" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 3: Responsive Web Design</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">11 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum4.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4 4h16v16H4zM8 8h8v8H8z" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 4: Galeri Gambar dengan Lightbox</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">16 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum5.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 5h18v14H3zM7 9h10M7 13h10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 5: Formulir</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">21 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum6.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 3h18v18H3zM7 7h10v4H7z" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 6: Membuat Blog Sederhana</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">26 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum7.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 6h18M3 12h18M3 18h18" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 7: Navigasi dengan Menu Responsif</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">31 Oct</div>
+            </div>
+            <div class="list-item" data-url="praktikum8.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 5v10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 8: Animasi CSS</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">5 Nov</div>
+            </div>
+            <div class="list-item" data-url="praktikum9.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2a10 10 0 0 0-10 10h4v4h12v-4h4a10 10 0 0 0-10-10z" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 9: Integrasi API Eksternal</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">10 Nov</div>
+            </div>
+            <div class="list-item" data-url="praktikum10.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 3h18v18H3zM7 7h10v10H7z" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 10: Pemrograman JavaScript</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">15 Nov</div>
+            </div>
+            <div class="list-item" data-url="praktikum11.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 5h18v14H3zM5 9h2M5 13h2" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 11: Membuat To-Do List</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">20 Nov</div>
+            </div>
+            <div class="list-item" data-url="praktikum12.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2L2 12h3v8h14v-8h3L12 2zm-4 8h8" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 12: Desain dan Animasi SVG</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">25 Nov</div>
+            </div>
+            <div class="list-item" data-url="praktikum13.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 3h18v18H3zM7 7h10M7 11h10M7 15h10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 13: Pengenalan ke Framework</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">30 Nov</div>
+            </div>
+            <div class="list-item" data-url="praktikum14.html">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2L2 22h20L12 2zm0 5v10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="content">
+                    <div class="title">Praktikum 14: Proyek Akhir</div>
+                    <div class="subtitle">Semester 2</div>
+                </div>
+                <div class="date">5 Dec</div>
+            </div>
+        </div>
+        <button class="toggle-btn" onclick="toggleCards()">
+            <span class="show">Show All</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                <path d="M4 6l4 4 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+    <div class="night-mode-toggle" onclick="toggleNightMode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2"/>
+        </svg>
+    </div>
+    <script>
+        const container = document.querySelector('.container');
+        const toggleBtn = document.querySelector('.toggle-btn');
+
+        function toggleCards() {
+            const isExpanded = container.classList.contains('expanded');
+            const items = document.querySelectorAll('.list-item');
+            if (isExpanded) {
+                // Hide cards with animation
+                items.forEach((item, index) => {
+                    if (index > 0) { // Keep the first card visible
+                        item.classList.remove('visible');
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300); // Match transition duration
+                    }
+                });
+                container.classList.remove('expanded');
+                toggleBtn.querySelector('.show').textContent = 'Show All';
+            } else {
+                // Show all cards with animation
+                items.forEach(item => {
+                    item.style.display = 'flex';
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, 10); // Small delay for display to take effect
+                });
+                container.classList.add('expanded');
+                toggleBtn.querySelector('.show').textContent = 'Hide';
+            }
+        }
+
+        function toggleNightMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Make cards clickable
+        document.querySelectorAll('.list-item').forEach(item => {
+            item.addEventListener('click', () => {
+                window.location.href = item.dataset.url;
+            });
+        });
+    </script>
+</body>
+</html>
